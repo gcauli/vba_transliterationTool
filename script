@@ -1,0 +1,44 @@
+' transliteration tool written in VBA for workshop "Tools der empirischen Sprachwissenschaft"
+' Universität Hamburg Apr-Jul 2021
+' transliterate any cyrillic (russian) text into latin characters
+' scientific transliteration,mtable for reference https://www.kuwi.europa-uni.de/de/lehrstuhl/lw/osteuropa/Verweise/Transliterationstabelle.pdf
+' author: giulia cauli
+' project number: 20210515
+
+' ****************************************************************************
+
+Sub TransliterateCyrToLat()
+
+Dim i As Integer
+Dim sCyr As Variant
+Dim sLat As Variant
+Dim rDoc As Range
+Set rDoc = ActiveDocument.Range
+
+sCyr = Array(ChrW(1040), ChrW(1041), ChrW(1042), ChrW(1043), ChrW(1044), ChrW(1045), ChrW(1046), ChrW(1047), ChrW(1048), ChrW(1049), ChrW(1050), ChrW(1051), ChrW(1052), ChrW(1053), ChrW(1054), ChrW(1055), ChrW(1056), ChrW(1057), ChrW(1058), ChrW(1059), ChrW(1060), ChrW(1061), ChrW(1062), ChrW(1063), ChrW(1064), ChrW(1065), ChrW(1066), ChrW(1067), ChrW(1068), ChrW(1069), ChrW(1070), ChrW(1071), ChrW(1025), ChrW(1072), ChrW(1073), ChrW(1074), ChrW(1075), ChrW(1076), ChrW(1077), ChrW(1078), ChrW(1079), ChrW(1080), ChrW(1081), ChrW(1082), ChrW(1083), ChrW(1084), ChrW(1085), ChrW(1086), ChrW(1087), ChrW(1088), ChrW(1089), ChrW(1090), ChrW(1091), ChrW(1092), ChrW(1093), ChrW(1094), ChrW(1095), ChrW(1096), ChrW(1097), ChrW(1098), ChrW(1099), ChrW(1100), ChrW(1101), ChrW(1102), ChrW(1103), ChrW(1105))
+
+sLat = Array("A", "B", "V", "G", "D", "E", ChrW(381), "Z", "I", "J", "K", "L", "M", "N", "O", "P", "R", "S", "T", "U", "F", "Ch", "C", ChrW(268), ChrW(352), ChrW(352) & ChrW(269), "", "Y", "'", "È", "Ju", "Ja", "Ë", "a", "b", "v", "g", "d", "e", ChrW(382), "z", "i", "j", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u", "f", "ch", "c", ChrW(269), ChrW(353), ChrW(353) & ChrW(269), "", "y", "'", "è", "ju", "ja", "ë")
+
+'No screen update while code is running
+Application.ScreenUpdating = False
+    
+'Replacing cyrillic characters with latin characters
+    With Selection.Find
+        .ClearFormatting
+        .Replacement.ClearFormatting
+        .Forward = True
+        .Wrap = wdFindStop
+        .MatchWildcards = False
+        .Format = True
+        .MatchCase = True
+             For i = LBound(sCyr) To UBound(sLat)
+                .Text = sCyr(i)
+                .Replacement.Text = sLat(i)
+                .Execute Replace:=wdReplaceAll
+            Next i
+    End With
+
+'Updating screen
+Application.ScreenUpdating = True
+
+End Sub
